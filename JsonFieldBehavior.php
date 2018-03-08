@@ -5,6 +5,7 @@ namespace mirkhamidov\behaviors;
 
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
+use yii\db\JsonExpression;
 use yii\helpers\Json;
 
 class JsonFieldBehavior extends Behavior
@@ -39,7 +40,13 @@ class JsonFieldBehavior extends Behavior
     {
         $value = $this->getModel()->getAttribute($this->field);
 
-        $value = Json::decode($value);
+        try {
+            if (is_string($value)) {
+                $value = Json::decode($value);
+            }
+        } catch (\Exception $e) {
+            $value = [];
+        }
         $value = $value ?: [];
         $this->getModel()->setAttribute($this->field, $value);
 
@@ -59,11 +66,11 @@ class JsonFieldBehavior extends Behavior
             if (!is_array($value) || !is_object($value)) {
                 $value = (array)$value;
             }
-            $value = Json::encode($value);
+            $value = new JsonExpression($value);
         }
 
         if (empty($value)) {
-            $value = '{}';
+            return $this;
         }
 
         $this->getModel()->setAttribute($this->field, $value);
