@@ -44,6 +44,9 @@ class JsonFieldBehavior extends Behavior
             if (is_string($value)) {
                 $value = Json::decode($value);
             }
+            if ($value instanceof JsonExpression) {
+                $value = $value->getValue();
+            }
         } catch (\Exception $e) {
             $value = [];
         }
@@ -62,7 +65,7 @@ class JsonFieldBehavior extends Behavior
     public function _saveArray()
     {
         $value = $this->getModel()->getAttribute($this->field);
-        if (!empty($value) && !is_string($value)) {
+        if (!($value instanceof JsonExpression) && !empty($value) && !is_string($value)) {
             if (!is_array($value) || !is_object($value)) {
                 $value = (array)$value;
             }
