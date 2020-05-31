@@ -71,6 +71,10 @@ class JsonFieldBehavior extends Behavior
             }
             $value = new JsonExpression($value);
         }
+        
+        if (empty($value) && [] === $value) {
+            $value = new JsonExpression($value);
+        }
 
         if (empty($value)) {
             return $this;
