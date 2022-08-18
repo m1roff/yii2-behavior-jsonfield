@@ -1,0 +1,16 @@
+suite_namespace: tests\functional
+actor: FunctionalTester
+modules:
+    enabled:
+        - Asserts
+        - Db:
+            dsn: 'mysql:host=mysql;dbname=behavior'
+            user: 'root'
+            password: 'verysecret'
+            populate: true
+            cleanup: true
+            dump:
+                - tests/_data/dbdump.sql
+        - Yii2:
+            configFile: 'tests/_data/app-local-config.php'
+        - \app\tests\support\module\SnapshotModule

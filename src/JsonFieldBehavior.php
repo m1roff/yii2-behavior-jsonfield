@@ -3,11 +3,17 @@
 namespace mirkhamidov\behaviors;
 
 
+use Exception;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
 use yii\db\JsonExpression;
 use yii\helpers\Json;
 
+/**
+ *
+ * @property-read ActiveRecord $model
+ */
 class JsonFieldBehavior extends Behavior
 {
     /**
@@ -21,23 +27,24 @@ class JsonFieldBehavior extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_INIT => '_loadArray',
-            ActiveRecord::EVENT_AFTER_FIND => '_loadArray',
-            ActiveRecord::EVENT_AFTER_INSERT => '_loadArray',
-            ActiveRecord::EVENT_AFTER_UPDATE => '_loadArray',
+            BaseActiveRecord::EVENT_INIT       => '_loadArray',
+            BaseActiveRecord::EVENT_AFTER_FIND => '_loadArray',
+            BaseActiveRecord::EVENT_AFTER_INSERT   => '_loadArray',
+            BaseActiveRecord::EVENT_AFTER_UPDATE   => '_loadArray',
 
-            ActiveRecord::EVENT_BEFORE_INSERT => '_saveArray',
-            ActiveRecord::EVENT_BEFORE_UPDATE => '_saveArray',
+            BaseActiveRecord::EVENT_BEFORE_INSERT => '_saveArray',
+            BaseActiveRecord::EVENT_BEFORE_UPDATE => '_saveArray',
         ];
     }
 
     /**
      * Loads array field
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
-    public function _loadArray()
+    public function _loadArray(): JsonFieldBehavior
     {
+        //die(__METHOD__);
         $value = $this->getModel()->getAttribute($this->field);
 
         try {
@@ -47,7 +54,7 @@ class JsonFieldBehavior extends Behavior
             if ($value instanceof JsonExpression) {
                 $value = $value->getValue();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $value = [];
         }
         $value = $value ?: [];
@@ -60,9 +67,9 @@ class JsonFieldBehavior extends Behavior
      * Sets array field data into format suitable for save
      *
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
-    public function _saveArray()
+    public function _saveArray(): JsonFieldBehavior
     {
         $value = $this->getModel()->getAttribute($this->field);
         if (!($value instanceof JsonExpression) && !empty($value) && !is_string($value)) {
@@ -71,7 +78,7 @@ class JsonFieldBehavior extends Behavior
             }
             $value = new JsonExpression($value);
         }
-        
+
         if (empty($value) && [] === $value) {
             $value = new JsonExpression($value);
         }
@@ -90,15 +97,15 @@ class JsonFieldBehavior extends Behavior
      * Returns model
      *
      * @return ActiveRecord
-     * @throws \Exception
+     * @throws Exception
      */
-    private function getModel()
+    private function getModel(): ActiveRecord
     {
         if (!$model = $this->owner) {
-            throw new \Exception('Model is not been initialized properly.');
+            throw new Exception('Model is not been initialized properly.');
         }
         if (!$model instanceof ActiveRecord) {
-            throw new \Exception(sprintf('Behavior must be applied to the ActiveRecord model class and it\'s iheritants, the unsupported class provided: `%s`', get_class($model)));
+            throw new Exception(sprintf('Behavior must be applied to the ActiveRecord model class and it\'s iheritants, the unsupported class provided: `%s`', get_class($model)));
         }
 
         return $model;

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+    app:
+        image: yiisoftware/yii2-php:7.4-fpm
+        volumes:
+            - ./:/app:delegated
+        networks:
+            - app
+
+    mysql:
+        image: mysql:8
+        environment:
+            MYSQL_ROOT_PASSWORD: verysecret
+            MYSQL_DATABASE: behavior
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        networks:
+            - app
+
+networks:
+    app:
+        name: yii2-behavior-jsonfield-network
+
+
+

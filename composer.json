@@ -1,17 +1,56 @@
 {
-  "name": "mirkhamidov/yii2-behavior-jsonfield",
-  "description": "JSON field Behavior",
-  "keywords": ["yii2", "json", "behvior"],
-  "type": "yii2-extension",
-  "license": "BSD-3-Clause",
-  "minimum-stability": "dev",
-  "require": {
-    "php": ">=7.1.0",
-    "yiisoft/yii2": ">=2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "mirkhamidov\\behaviors\\": ""
-    }
-  }
+    "name": "mirkhamidov/yii2-behavior-jsonfield",
+    "description": "JSON field Behavior",
+    "keywords": ["yii2", "json", "behvior"],
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "stable",
+    "prefer-stable" : true,
+    "require": {
+        "php": "^8.0|^7.4"
+    },
+    "require-dev": {
+        "yiisoft/yii2": "dev-master",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "codeception/codeception": "^4.0",
+        "codeception/module-yii2": "^1.1",
+        "codeception/module-asserts": "2.0.x-dev",
+        "symfony/var-dumper": "^5.4",
+        "mockery/mockery": "^1.5",
+        "codeception/module-db": "^2.0",
+        "spatie/phpunit-snapshot-assertions": "^4.2"
+    },
+    "archive": {
+        "exclude": [
+            ".editorconfig",
+            "codeception.yml",
+            "Makefile",
+            "composer.lock",
+            "docker-compose.yml",
+            "tests"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "mirkhamidov\\behaviors\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "app\\tests\\": "tests",
+            "app\\tests\\data\\": "tests/_data",
+            "app\\tests\\support\\": "tests/_support"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
