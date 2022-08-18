@@ -2,7 +2,7 @@
     "name": "mirkhamidov/yii2-behavior-jsonfield",
     "description": "JSON field Behavior",
     "keywords": ["yii2", "json", "behvior"],
-    "type": "yii2-extension",
+    "type": "library",
     "license": "BSD-3-Clause",
     "minimum-stability": "stable",
     "prefer-stable" : true,
