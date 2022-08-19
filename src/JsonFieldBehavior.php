@@ -2,7 +2,6 @@
 
 namespace mirkhamidov\behaviors;
 
-
 use Exception;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
@@ -11,8 +10,7 @@ use yii\db\JsonExpression;
 use yii\helpers\Json;
 
 /**
- *
- * @property-read ActiveRecord $model
+ * @property ActiveRecord $model
  */
 class JsonFieldBehavior extends Behavior
 {
@@ -22,15 +20,15 @@ class JsonFieldBehavior extends Behavior
     public $field;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function events()
     {
         return [
-            BaseActiveRecord::EVENT_INIT       => '_loadArray',
+            BaseActiveRecord::EVENT_INIT => '_loadArray',
             BaseActiveRecord::EVENT_AFTER_FIND => '_loadArray',
-            BaseActiveRecord::EVENT_AFTER_INSERT   => '_loadArray',
-            BaseActiveRecord::EVENT_AFTER_UPDATE   => '_loadArray',
+            BaseActiveRecord::EVENT_AFTER_INSERT => '_loadArray',
+            BaseActiveRecord::EVENT_AFTER_UPDATE => '_loadArray',
 
             BaseActiveRecord::EVENT_BEFORE_INSERT => '_saveArray',
             BaseActiveRecord::EVENT_BEFORE_UPDATE => '_saveArray',
@@ -38,13 +36,14 @@ class JsonFieldBehavior extends Behavior
     }
 
     /**
-     * Loads array field
-     * @return $this
+     * Loads array field.
+     *
      * @throws Exception
+     *
+     * @return $this
      */
     public function _loadArray(): JsonFieldBehavior
     {
-        //die(__METHOD__);
         $value = $this->getModel()->getAttribute($this->field);
 
         try {
@@ -64,17 +63,18 @@ class JsonFieldBehavior extends Behavior
     }
 
     /**
-     * Sets array field data into format suitable for save
+     * Sets array field data into format suitable for save.
+     *
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function _saveArray(): JsonFieldBehavior
     {
         $value = $this->getModel()->getAttribute($this->field);
         if (!($value instanceof JsonExpression) && !empty($value) && !is_string($value)) {
             if (!is_array($value) || !is_object($value)) {
-                $value = (array)$value;
+                $value = (array) $value;
             }
             $value = new JsonExpression($value);
         }
@@ -92,12 +92,12 @@ class JsonFieldBehavior extends Behavior
         return $this;
     }
 
-
     /**
-     * Returns model
+     * Returns model.
+     *
+     * @throws Exception
      *
      * @return ActiveRecord
-     * @throws Exception
      */
     private function getModel(): ActiveRecord
     {

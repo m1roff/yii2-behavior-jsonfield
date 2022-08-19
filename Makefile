@@ -23,5 +23,8 @@ tests-prepare: ## build codeception
 runin: ## Run command in app container
 	@docker-compose exec -- app $(filter-out $@,$(MAKECMDGOALS))
 
+cs-fix: ## Run CS fixer and fix
+	@docker-compose exec -- app php vendor/bin/php-cs-fixer fix -v
+
 %:
 	@:

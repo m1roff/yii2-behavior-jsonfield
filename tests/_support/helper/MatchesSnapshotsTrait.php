@@ -33,7 +33,6 @@ trait MatchesSnapshotsTrait
         parent::_before($test);
     }
 
-
     public function assertMatchesJsonSnapshot($actual): void
     {
         $this->initTestClassMetadata('assertMatchesJsonSnapshot');
