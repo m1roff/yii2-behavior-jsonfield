@@ -2,11 +2,16 @@ version: '3.8'
 
 services:
     app:
-        image: yiisoftware/yii2-php:7.4-fpm
+        image: yiisoftware/yii2-php:8.0-fpm
         volumes:
             - ./:/app:delegated
+            - ./.docker/php:/usr/local/etc/php/conf.d/custom:delegated
         networks:
             - app
+        environment:
+            PHP_ENABLE_XDEBUG: 1
+            PHP_IDE_CONFIG: serverName=app
+            PHP_INI_SCAN_DIR: ":/usr/local/etc/php/conf.d/custom"
 
     mysql:
         image: mysql:8
