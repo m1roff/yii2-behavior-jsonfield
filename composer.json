@@ -7,7 +7,7 @@
     "minimum-stability": "stable",
     "prefer-stable" : true,
     "require": {
-        "php": "^8.0|^7.4"
+        "php": "^8.0"
     },
     "require-dev": {
         "yiisoft/yii2": "dev-master",
@@ -22,13 +22,10 @@
     },
     "archive": {
         "exclude": [
-            ".editorconfig",
-            "codeception.yml",
-            "Makefile",
-            "composer.lock",
-            "docker-compose.yml",
-            ".php-cs-fixer.dist.php",
-            "tests"
+            "*",
+            "!src/*",
+            "!composer.json",
+            "!README.md"
         ]
     },
     "autoload": {
