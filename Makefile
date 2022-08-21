@@ -26,5 +26,7 @@ runin: ## Run command in app container
 cs-fix: ## Run CS fixer and fix
 	@docker-compose exec -- app php vendor/bin/php-cs-fixer fix -v
 
+pre-commit: cs-fix tests-prepare tests-run ## Prepare to commit commands
+
 %:
 	@:

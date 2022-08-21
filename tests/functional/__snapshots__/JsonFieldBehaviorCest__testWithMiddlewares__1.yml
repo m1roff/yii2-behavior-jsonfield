@@ -1,0 +1,4 @@
+-
+    id: '1'
+    interests: '["interest-middleware-1", "TWO more data from SecondMiddleware", "one more data from FirstMiddleware", "Manual text from BookModelWithMiddlewares"]'
+    languages: '[]'

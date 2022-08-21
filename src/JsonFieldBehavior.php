@@ -2,12 +2,15 @@
 
 namespace mirkhamidov\behaviors;
 
-use Exception;
+use mirkhamidov\behaviors\Exception\ActiveRecordBehaviorOnlyException;
+use mirkhamidov\behaviors\Exception\MiddlewareException;
+use mirkhamidov\behaviors\Exception\ModelNotInitializedProperly;
+use mirkhamidov\behaviors\Middleware\DefaultLoadJsonExpressionMiddleware;
+use mirkhamidov\behaviors\Middleware\DefaultSaveJsonExpressionMiddleware;
+use mirkhamidov\behaviors\Middleware\MiddlewareHandler;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
-use yii\db\JsonExpression;
-use yii\helpers\Json;
 
 /**
  * @property ActiveRecord $model
@@ -15,9 +18,31 @@ use yii\helpers\Json;
 class JsonFieldBehavior extends Behavior
 {
     /**
-     * @var string Field name supposed to contain array data
+     * Field name supposed to contain array data.
      */
-    public $field;
+    public string $field;
+
+    /**
+     * First go through default middlewares.
+     */
+    public bool $useDefaultLoadMiddlewares = true;
+
+    public bool $useDefaultSaveMiddlewares = true;
+
+    /**
+     * Injectable middlewares.
+     */
+    public array $loadMiddlewares = [];
+
+    public array $saveMiddlewares = [];
+
+    private array $defaultLoadMiddlewares = [
+        DefaultLoadJsonExpressionMiddleware::class,
+    ];
+
+    private array $defaultSaveMiddlewares = [
+        DefaultSaveJsonExpressionMiddleware::class,
+    ];
 
     /**
      * {@inheritdoc}
@@ -36,76 +61,64 @@ class JsonFieldBehavior extends Behavior
     }
 
     /**
-     * Loads array field.
-     *
-     * @throws Exception
-     *
-     * @return $this
+     * @throws ActiveRecordBehaviorOnlyException
+     * @throws MiddlewareException
+     * @throws ModelNotInitializedProperly
      */
     public function _loadArray(): JsonFieldBehavior
     {
         $value = $this->getModel()->getAttribute($this->field);
 
-        try {
-            if (is_string($value)) {
-                $value = Json::decode($value);
-            }
-            if ($value instanceof JsonExpression) {
-                $value = $value->getValue();
-            }
-        } catch (Exception $e) {
-            $value = [];
-        }
-        $value = $value ?: [];
+        $value = $this->createLoadMiddlewareHandler()->handle($value);
+
         $this->getModel()->setAttribute($this->field, $value);
 
         return $this;
     }
 
     /**
-     * Sets array field data into format suitable for save.
-     *
-     * @throws Exception
-     *
-     * @return $this
+     * @throws ActiveRecordBehaviorOnlyException
+     * @throws MiddlewareException
+     * @throws ModelNotInitializedProperly
      */
     public function _saveArray(): JsonFieldBehavior
     {
         $value = $this->getModel()->getAttribute($this->field);
-        if (!($value instanceof JsonExpression) && !empty($value) && !is_string($value)) {
-            if (!is_array($value) || !is_object($value)) {
-                $value = (array) $value;
-            }
-            $value = new JsonExpression($value);
-        }
 
-        if (empty($value) && [] === $value) {
-            $value = new JsonExpression($value);
-        }
-
-        if (empty($value)) {
-            return $this;
-        }
+        $value = $this->createSaveMiddlewareHandler()->handle($value);
 
         $this->getModel()->setAttribute($this->field, $value);
 
         return $this;
     }
 
+    private function createSaveMiddlewareHandler(): MiddlewareHandler
+    {
+        return new MiddlewareHandler(array_merge(
+            $this->useDefaultSaveMiddlewares ? $this->defaultSaveMiddlewares : [],
+            $this->saveMiddlewares,
+        ));
+    }
+
+    private function createLoadMiddlewareHandler(): MiddlewareHandler
+    {
+        return new MiddlewareHandler(array_merge(
+            $this->useDefaultLoadMiddlewares ? $this->defaultLoadMiddlewares : [],
+            $this->loadMiddlewares,
+        ));
+    }
+
     /**
-     * Returns model.
-     *
-     * @throws Exception
-     *
-     * @return ActiveRecord
+     * @throws ActiveRecordBehaviorOnlyException
+     * @throws ModelNotInitializedProperly
      */
     private function getModel(): ActiveRecord
     {
         if (!$model = $this->owner) {
-            throw new Exception('Model is not been initialized properly.');
+            throw new ModelNotInitializedProperly();
         }
         if (!$model instanceof ActiveRecord) {
-            throw new Exception(sprintf('Behavior must be applied to the ActiveRecord model class and it\'s iheritants, the unsupported class provided: `%s`', get_class($model)));
+            throw new ActiveRecordBehaviorOnlyException($model);
         }
 
         return $model;

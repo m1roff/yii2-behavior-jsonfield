@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\tests\functional;
 
+use app\tests\_data\models\BookModelWithMiddlewares;
 use app\tests\data\models\BookModel;
 use FunctionalTester;
 
@@ -39,5 +40,24 @@ class JsonFieldBehaviorCest
         $loadedBook = BookModel::findOne($bookId);
 
         $I->assertObjectMatchesSnapshot($loadedBook);
+    }
+
+    public function testWithMiddlewares(FunctionalTester $I): void
+    {
+        $book = new BookModelWithMiddlewares();
+        $book->interests = [
+            'interest-middleware-1',
+        ];
+        $book->save();
+
+        $I->assertObjectMatchesSnapshot(BookModel::find()->asArray()->all());
+
+        $bookId = $book->id;
+        $book = null;
+
+        $loadedBook = BookModelWithMiddlewares::findOne($bookId);
+        $I->assertNotNull($loadedBook, 'Book not loaded by Id');
+
+        $I->assertObjectMatchesSnapshot($loadedBook->interests);
     }
 }
