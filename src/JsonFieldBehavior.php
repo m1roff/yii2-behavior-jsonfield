@@ -1,13 +1,13 @@
 <?php
 
-namespace mirkhamidov\behaviors;
+namespace m1roff\behaviors;
 
-use mirkhamidov\behaviors\Exception\ActiveRecordBehaviorOnlyException;
-use mirkhamidov\behaviors\Exception\MiddlewareException;
-use mirkhamidov\behaviors\Exception\ModelNotInitializedProperly;
-use mirkhamidov\behaviors\Middleware\DefaultLoadJsonExpressionMiddleware;
-use mirkhamidov\behaviors\Middleware\DefaultSaveJsonExpressionMiddleware;
-use mirkhamidov\behaviors\Middleware\MiddlewareHandler;
+use m1roff\behaviors\Exception\ActiveRecordBehaviorOnlyException;
+use m1roff\behaviors\Exception\MiddlewareException;
+use m1roff\behaviors\Exception\ModelNotInitializedProperly;
+use m1roff\behaviors\Middleware\DefaultLoadJsonExpressionMiddleware;
+use m1roff\behaviors\Middleware\DefaultSaveJsonExpressionMiddleware;
+use m1roff\behaviors\Middleware\MiddlewareHandler;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;

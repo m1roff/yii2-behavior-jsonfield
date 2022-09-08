@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace app\tests\data\models;
 
-use mirkhamidov\behaviors\JsonFieldBehavior;
+use m1roff\behaviors\JsonFieldBehavior;
 use yii\db\ActiveRecord;
 
 /**

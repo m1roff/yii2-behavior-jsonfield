@@ -8,8 +8,8 @@ use app\tests\_data\middleware\FirstMiddleware;
 use app\tests\_data\middleware\LoadMiddleware;
 use app\tests\_data\middleware\SecondMiddleware;
 use app\tests\data\models\BookModel;
-use mirkhamidov\behaviors\JsonFieldBehavior;
-use mirkhamidov\behaviors\Middleware\DefaultSaveJsonExpressionMiddleware;
+use m1roff\behaviors\JsonFieldBehavior;
+use m1roff\behaviors\Middleware\DefaultSaveJsonExpressionMiddleware;
 use yii\helpers\ArrayHelper;
 
 class BookModelWithMiddlewares extends BookModel

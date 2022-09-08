@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace app\tests\_data\middleware;
 
-use mirkhamidov\behaviors\Exception\MiddlewareException;
-use mirkhamidov\behaviors\Middleware\DefaultLoadJsonExpressionMiddleware;
-use mirkhamidov\behaviors\Middleware\MiddlewareInterface;
+use m1roff\behaviors\Exception\MiddlewareException;
+use m1roff\behaviors\Middleware\DefaultLoadJsonExpressionMiddleware;
+use m1roff\behaviors\Middleware\MiddlewareInterface;
 use yii\db\JsonExpression;
 
 class LoadMiddleware implements MiddlewareInterface

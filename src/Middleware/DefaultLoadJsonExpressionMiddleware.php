@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace mirkhamidov\behaviors\Middleware;
+namespace m1roff\behaviors\Middleware;
 
 use yii\base\InvalidArgumentException;
 use yii\db\JsonExpression;

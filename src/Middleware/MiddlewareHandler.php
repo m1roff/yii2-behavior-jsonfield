@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace mirkhamidov\behaviors\Middleware;
+namespace m1roff\behaviors\Middleware;
 
-use mirkhamidov\behaviors\Exception\MiddlewareException;
+use m1roff\behaviors\Exception\MiddlewareException;
 use Yii;
 
 final class MiddlewareHandler

@@ -6,7 +6,7 @@ namespace app\tests\_data\models;
 
 use app\tests\_data\middleware\LoadMiddleware;
 use app\tests\data\models\BookModel;
-use mirkhamidov\behaviors\JsonFieldBehavior;
+use m1roff\behaviors\JsonFieldBehavior;
 use yii\helpers\ArrayHelper;
 
 class BookModelWithMiddlewaresButNotWellConfigured extends BookModel

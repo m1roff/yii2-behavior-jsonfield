@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace mirkhamidov\behaviors\Exception;
+namespace m1roff\behaviors\Exception;
 
 use yii\base\InvalidConfigException;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace app\tests\_data\middleware;
 
-use mirkhamidov\behaviors\Middleware\MiddlewareInterface;
+use m1roff\behaviors\Middleware\MiddlewareInterface;
 
 class SecondMiddleware implements MiddlewareInterface
 {

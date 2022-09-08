@@ -6,10 +6,10 @@ namespace app\tests\functional;
 
 use app\tests\_data\models\BookModelWithMiddlewaresButNotWellConfigured;
 use FunctionalTester;
-use mirkhamidov\behaviors\Exception\ActiveRecordBehaviorOnlyException;
-use mirkhamidov\behaviors\Exception\MiddlewareException;
-use mirkhamidov\behaviors\Exception\ModelNotInitializedProperly;
-use mirkhamidov\behaviors\JsonFieldBehavior;
+use m1roff\behaviors\Exception\ActiveRecordBehaviorOnlyException;
+use m1roff\behaviors\Exception\MiddlewareException;
+use m1roff\behaviors\Exception\ModelNotInitializedProperly;
+use m1roff\behaviors\JsonFieldBehavior;
 use yii\base\Component;
 use yii\db\BaseActiveRecord;
 
