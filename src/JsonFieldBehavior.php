@@ -7,7 +7,7 @@ use m1roff\behaviors\Exception\MiddlewareException;
 use m1roff\behaviors\Exception\ModelNotInitializedProperly;
 use m1roff\behaviors\Middleware\DefaultLoadJsonExpressionMiddleware;
 use m1roff\behaviors\Middleware\DefaultSaveJsonExpressionMiddleware;
-use m1roff\behaviors\Middleware\MiddlewareHandler;
+use m1roff\behaviors\Middleware\MiddlewaresHandler;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
@@ -69,7 +69,10 @@ class JsonFieldBehavior extends Behavior
     {
         $value = $this->getModel()->getAttribute($this->field);
 
-        $value = $this->createLoadMiddlewareHandler()->handle($value);
+        $value = $this
+            ->createLoadMiddlewareHandler()
+            ->withOwner($this->owner)
+            ->handle($value);
 
         $this->getModel()->setAttribute($this->field, $value);
 
@@ -85,24 +88,27 @@ class JsonFieldBehavior extends Behavior
     {
         $value = $this->getModel()->getAttribute($this->field);
 
-        $value = $this->createSaveMiddlewareHandler()->handle($value);
+        $value = $this
+            ->createSaveMiddlewareHandler()
+            ->withOwner($this->owner)
+            ->handle($value);
 
         $this->getModel()->setAttribute($this->field, $value);
 
         return $this;
     }
 
-    private function createSaveMiddlewareHandler(): MiddlewareHandler
+    private function createSaveMiddlewareHandler(): MiddlewaresHandler
     {
-        return new MiddlewareHandler(array_merge(
+        return new MiddlewaresHandler(array_merge(
             $this->useDefaultSaveMiddlewares ? $this->defaultSaveMiddlewares : [],
             $this->saveMiddlewares,
         ));
     }
 
-    private function createLoadMiddlewareHandler(): MiddlewareHandler
+    private function createLoadMiddlewareHandler(): MiddlewaresHandler
     {
-        return new MiddlewareHandler(array_merge(
+        return new MiddlewaresHandler(array_merge(
             $this->useDefaultLoadMiddlewares ? $this->defaultLoadMiddlewares : [],
             $this->loadMiddlewares,
         ));
